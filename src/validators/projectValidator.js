@@ -1,5 +1,5 @@
 
-const { body } = require("express-validator");
+const { body, query } = require("express-validator");
 
 // Validation mta3 creation projet
 const createProjectValidator = [
@@ -41,7 +41,31 @@ const updateProjectValidator = [
         .withMessage("Statut du projet invalide")
 ];
 
+// Validation mta3 recherche w tri des projets.
+const listProjectsValidator = [
+    query("search")
+        .optional()
+        .isString().withMessage("La recherche doit etre un texte")
+        .isLength({ max: 100 }).withMessage("Recherche trop longue"),
+
+    query("statut")
+        .optional()
+        .isIn(["en_cours", "termine", "en_pause"])
+        .withMessage("Statut du projet invalide"),
+
+    query("sort")
+        .optional()
+        .isIn(["nom", "statut", "createdAt"])
+        .withMessage("Champ de tri invalide"),
+
+    query("order")
+        .optional()
+        .isIn(["asc", "desc"])
+        .withMessage("Ordre de tri invalide")
+];
+
 module.exports = {
     createProjectValidator,
-    updateProjectValidator
+    updateProjectValidator,
+    listProjectsValidator
 };

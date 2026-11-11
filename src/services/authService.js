@@ -21,7 +21,7 @@ class AuthService {
             nom: data.nom,
             login: data.login,
             password: hashedPassword,
-            role: "user"
+            role: data.role
         });
 
         return {

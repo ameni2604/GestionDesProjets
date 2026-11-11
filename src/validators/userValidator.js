@@ -17,7 +17,12 @@ const registerValidator = [
     body("password")
         .notEmpty().withMessage("Le mot de passe est obligatoire")
         .isLength({ min: 6 })
-        .withMessage("Le mot de passe doit contenir au moins 6 caracteres")
+        .withMessage("Le mot de passe doit contenir au moins 6 caracteres"),
+
+    body("role")
+        .notEmpty().withMessage("Le role est obligatoire")
+        .isIn(["user", "manager"])
+        .withMessage("Le role doit etre user ou manager")
 ];
 
 // Validation mta3 connexion
