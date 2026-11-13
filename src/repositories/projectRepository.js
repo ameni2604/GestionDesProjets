@@ -43,6 +43,10 @@ class ProjectRepository {
         return project.populate("proprietaire", "nom login");
     }
 
+    async findById(id) {
+        return Project.findById(id).populate("proprietaire", "nom login");
+    }
+
     async updateAccessibleById(id, userId, isManager, updates) {
         const filter = { _id: id };
 

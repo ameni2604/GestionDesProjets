@@ -1,5 +1,5 @@
 const projectRepository = require("../repositories/projectRepository");
-
+const taskRepository = require("../repositories/taskRepository");
 const PROJECT_STATUSES = ["en_cours", "termine", "en_pause"];
 const SORT_FIELDS = ["nom", "statut", "createdAt"];
 
@@ -85,18 +85,22 @@ class ProjectService {
     }
 
     async delete(id, user) {
-        const project = await projectRepository.deleteAccessibleById(
+        const project = await projectRepository.findAccessibleById(
             id,
             user.id,
             user.role === "manager"
         );
 
-        if (!project) {
-            throw new Error("Projet introuvable");
-        }
+        if (!project) throw new Error("Projet introuvable");
 
-        return project;
+        await taskRepository.deleteByProject(id);
+        return projectRepository.deleteAccessibleById(id, user.id, user.role === "manager");
     }
+            
 }
+
+         
+    
+
 
 module.exports = new ProjectService();
