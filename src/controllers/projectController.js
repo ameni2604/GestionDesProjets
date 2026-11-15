@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const projectService = require("../services/projectService");
-
+// liste des messages d'erreur connus qui doivent être traités comme des erreurs côté client (400).
 const clientErrors = new Set([
     "Champ de tri invalide",
     "Ordre de tri invalide",
@@ -8,6 +8,7 @@ const clientErrors = new Set([
     "Aucun champ a modifier"
 ]);
 
+// convertit les erreurs du service en réponses HTTP appropriées.
 const respondWithError = (res, error) => {
     let status = 500;
 
@@ -34,6 +35,7 @@ const respondWithError = (res, error) => {
 };
 
 class ProjectController {
+    // Retourne la liste des projets accessibles selon les filtres demandés.
     async list(req, res) {
         try {
             const projects = await projectService.list(req.user, req.query);
@@ -43,6 +45,7 @@ class ProjectController {
         }
     }
 
+    // Valide l'identifiant puis retourne le projet demandé.
     async getById(req, res) {
         if (!mongoose.isValidObjectId(req.params.id)) {
             return res.status(400).json({ message: "Identifiant de projet invalide" });
@@ -56,6 +59,7 @@ class ProjectController {
         }
     }
 
+    // Crée un projet appartenant à l'utilisateur connecté.
     async create(req, res) {
         try {
             const project = await projectService.create(req.body, req.user.id);
@@ -68,6 +72,7 @@ class ProjectController {
         }
     }
 
+    // Valide l'identifiant puis applique les modifications au projet.
     async update(req, res) {
         if (!mongoose.isValidObjectId(req.params.id)) {
             return res.status(400).json({ message: "Identifiant de projet invalide" });
@@ -88,6 +93,7 @@ class ProjectController {
         }
     }
 
+    // Supprime le projet demandé s'il est accessible à l'utilisateur.
     async delete(req, res) {
         if (!mongoose.isValidObjectId(req.params.id)) {
             return res.status(400).json({ message: "Identifiant de projet invalide" });

@@ -1,5 +1,6 @@
 const taskService = require("../services/taskService");
 
+// Convertit les erreurs du service en réponses HTTP appropriées.
 const respondWithError = (res, error) => {
     const notFound = ["Projet introuvable", "Tâche introuvable", "Utilisateur à affecter introuvable"];
     const badRequest = [
@@ -17,36 +18,42 @@ const respondWithError = (res, error) => {
 };
 
 class TaskController {
+    // Retourne les tâches du projet selon les filtres et le tri demandés.
     async list(req, res) {
         try {
             const tasks = await taskService.list(req.params.projectId, req.query, req.user);
             return res.status(200).json({ tasks });
         } catch (error) { return respondWithError(res, error); }
     }
+    // Retourne une tâche accessible à l'utilisateur connecté.
     async getById(req, res) {
         try {
             const task = await taskService.getById(req.params.id, req.user);
             return res.status(200).json({ task });
         } catch (error) { return respondWithError(res, error); }
     }
+    // Crée une tâche dans le projet indiqué.
     async create(req, res) {
         try {
             const task = await taskService.create(req.params.projectId, req.body);
             return res.status(201).json({ message: "Tâche créée avec succès", task });
         } catch (error) { return respondWithError(res, error); }
     }
+    // Modifie une tâche accessible à l'utilisateur connecté.
     async update(req, res) {
         try {
             const task = await taskService.update(req.params.id, req.body, req.user);
             return res.status(200).json({ message: "Tâche modifiée avec succès", task });
         } catch (error) { return respondWithError(res, error); }
     }
+    // Affecte une tâche à l'utilisateur indiqué.
     async assign(req, res) {
         try {
             const task = await taskService.assign(req.params.id, req.body.utilisateurAssigne);
             return res.status(200).json({ message: "Tâche affectée avec succès", task });
         } catch (error) { return respondWithError(res, error); }
     }
+    // Supprime une tâche accessible à l'utilisateur connecté.
     async delete(req, res) {
         try {
             await taskService.delete(req.params.id, req.user);

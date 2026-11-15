@@ -7,7 +7,7 @@ const TASK_STATUSES = ["todo", "doing", "done"];
 const SORT_FIELDS = ["titre", "statut", "deadline", "createdAt"];
 
 class TaskService {
-    // User ينجم يخدم كان على projet متاعو؛ manager ينجم على الكل.
+    // traja3 ken  un projet accessible à l'utilisateur connecté.
     async getAccessibleProject(projectId, user) {
         if (!mongoose.isValidObjectId(projectId)) {
             throw new Error("Identifiant de projet invalide");
@@ -20,7 +20,7 @@ class TaskService {
         if (!project) throw new Error("Projet introuvable");
         return project;
     }
-
+// traj3 les tâches du projet selon les filtres et le tri demandés.
     async list(projectId, query, user) {
         await this.getAccessibleProject(projectId, user);
         const sort = query.sort || "createdAt";
@@ -38,7 +38,7 @@ class TaskService {
             order: order === "asc" ? 1 : -1
         });
     }
-
+// trja3 tache accessible à l'utilisateur connecté selon son id
     async getById(id, user) {
         if (!mongoose.isValidObjectId(id)) throw new Error("Identifiant de tâche invalide");
         const task = await taskRepository.findById(id);
@@ -49,7 +49,7 @@ class TaskService {
         }
         return task;
     }
-
+// cretaion d'une tâche vac l'id mte3 el projet
     async create(projectId, data) {
         if (!mongoose.isValidObjectId(projectId)) {
             throw new Error("Identifiant de projet invalide");
@@ -66,7 +66,7 @@ class TaskService {
             projet: projectId
         });
     }
-
+// modifier un tache
     async update(id, data, user) {
         const task = await this.getById(id, user);
         const updates = {};
@@ -76,7 +76,7 @@ class TaskService {
         if (Object.keys(updates).length === 0) throw new Error("Aucun champ à modifier");
         return taskRepository.update(task._id, updates);
     }
-
+// assigner une tache à un utilisateur
     async assign(id, userId) {
         if (!mongoose.isValidObjectId(id)) throw new Error("Identifiant de tâche invalide");
         if (!mongoose.isValidObjectId(userId)) throw new Error("Identifiant utilisateur invalide");
@@ -86,7 +86,7 @@ class TaskService {
         if (!user) throw new Error("Utilisateur à affecter introuvable");
         return taskRepository.update(id, { utilisateurAssigne: userId });
     }
-
+// supprission d'une tache
     async delete(id, user) {
         const task = await this.getById(id, user);
         await taskRepository.delete(task._id);

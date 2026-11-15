@@ -1,19 +1,13 @@
 
 const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const morgan = require("morgan");
-
+// Importation des routes
 const authRoutes = require("./routes/authRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const taskRoutes = require("./routes/tasksRoutes");
 
 const app = express();
 
-app.use(helmet());
-app.use(cors());
 app.use(express.json());
-app.use(morgan("dev"));
 
 // Route de test
 app.get("/", (req, res) => {
@@ -24,7 +18,9 @@ app.get("/", (req, res) => {
 
 // Routes d'authentification
 app.use("/api/auth", authRoutes);
+// Routes pour les projets
 app.use("/api/projects", projectRoutes);
+// Routes pour les tâchesb
 app.use("/api", taskRoutes);
 
 module.exports = app;

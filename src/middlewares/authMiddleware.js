@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const authenticate = (req, res, next) => {
 
-    // Nchoufou ken fama token fel Authorization ya3ni fel header mta3 request
+    // nchoufou ken fama token fel Authorization ya3ni fel header mta3 request
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -16,6 +16,7 @@ const authenticate = (req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     try {
+        // nverifyiw el token w njibou les informations mta3 utilisateur
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         // N7ottou les informations mta3 utilisateur fel request
         req.user = decoded;

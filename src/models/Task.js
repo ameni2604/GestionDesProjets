@@ -1,4 +1,4 @@
-
+// importation mta3 mongoose el ORM mta3 MongoDB
 const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema({
@@ -27,7 +27,7 @@ const taskSchema = new mongoose.Schema({
 
     deadline: {
         type: Date,
-        default: null
+        required: [true, "La deadline est obligatoire"]
     },
 
     // Houni kol tache tetba3 projet mo3ayen

@@ -1,7 +1,7 @@
 const Project = require("../models/Project");
 
 class ProjectRepository {
-    // Na3mlou recherche b texte escaped bech ma yetfasserch regex mel utilisateur.
+    // Recherche, filtre et trie les projets accessibles à l'utilisateur.
     async findMany({ userId, isManager, search, statut, sort, order }) {
         const filter = {};
 
@@ -27,7 +27,7 @@ class ProjectRepository {
             .sort({ [sort]: order });
     }
 
-    // El projet yethal ken lel owner mte3ou wala lel manager.
+    // Récupère un projet uniquement s'il est accessible à l'utilisateur.
     async findAccessibleById(id, userId, isManager) {
         const filter = { _id: id };
 
@@ -38,15 +38,18 @@ class ProjectRepository {
         return Project.findOne(filter).populate("proprietaire", "nom login");
     }
 
+    // Crée un projet et retourne son propriétaire avec ses informations.
     async create(projectData) {
         const project = await Project.create(projectData);
         return project.populate("proprietaire", "nom login");
     }
 
+    // Récupère un projet par son identifiant avec son propriétaire.
     async findById(id) {
         return Project.findById(id).populate("proprietaire", "nom login");
     }
 
+    // Modifie un projet accessible et retourne sa nouvelle version.
     async updateAccessibleById(id, userId, isManager, updates) {
         const filter = { _id: id };
 
@@ -60,6 +63,7 @@ class ProjectRepository {
         }).populate("proprietaire", "nom login");
     }
 
+    // Supprime un projet uniquement s'il est accessible à l'utilisateur.
     async deleteAccessibleById(id, userId, isManager) {
         const filter = { _id: id };
 

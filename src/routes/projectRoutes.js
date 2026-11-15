@@ -10,19 +10,25 @@ const {
 
 const router = express.Router();
 
-// Kol les routes houni ma yetsam7ouch ken ba3d authentification.
-router.use(authenticate);
 
+
+// les routes lzemhom authentification, donc n7ottou middleware mta3 authentification
+router.use(authenticate);
+// route mte3 liste des projets
 router.get("/", listProjectsValidator, validateRequest, (req, res) =>
     projectController.list(req, res)
 );
+// route mte3 création d'un projet
 router.post("/", createProjectValidator, validateRequest, (req, res) =>
     projectController.create(req, res)
 );
+// route mte3 récupération d'un projet par son id
 router.get("/:id", (req, res) => projectController.getById(req, res));
+// route mte3 mise à jour d'un projet par son id
 router.patch("/:id", updateProjectValidator, validateRequest, (req, res) =>
     projectController.update(req, res)
 );
+// route mte3 suppression d'un projet par son id
 router.delete("/:id", (req, res) => projectController.delete(req, res));
 
 module.exports = router;
