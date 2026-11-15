@@ -2,6 +2,10 @@
 
 API REST développée avec Node.js, Express et MongoDB/Mongoose. Elle permet de gérer les comptes, les projets et leurs tâches, avec authentification JWT, contrôle d'accès par rôle, recherche, filtres et tri.
 
+## Auteur
+
+Ameni Abidi
+
 ## Sommaire
 
 - [Technologies et structure](#technologies-et-structure)
